@@ -1,0 +1,8 @@
+---
+- name: copie du dossier de backup
+  hosts: windows_server
+  tasks:
+    - name: copie
+      fetch:
+        src: /etc/ansible/accel
+        dest: C:\Users\Administrateur\Desktop

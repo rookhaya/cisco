@@ -4,5 +4,5 @@
   tasks:
     - name: copie
       copy:
-        src: /etc/ansible/accel
+        src: /etc/ansible/accel/
         dest: C:\Users\Administrateur\Desktop

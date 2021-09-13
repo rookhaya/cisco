@@ -1,6 +1,6 @@
 ---
 - name: copie du dossier de backup
-  hosts: windows_server
+  hosts: windows
   tasks:
     - name: copie
       fetch:

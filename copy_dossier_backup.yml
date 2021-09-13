@@ -3,6 +3,6 @@
   hosts: windows
   tasks:
     - name: copie
-      copy:
+      win_copy:
         src: /etc/ansible/accel/
-        dest: "C:\Users\Administrateur\Desktop\backup"
+        dest: C:\Users\Administrateur\Desktop\backup

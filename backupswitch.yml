@@ -1,0 +1,52 @@
+---
+# Ansible Playbook to upgrade Cisco IOS
+- name: get  IOS vars
+  hosts: switch
+
+  gather_facts: true
+  connection: network_cli
+
+  vars:
+    ansible_network_os: ios
+  tasks:
+
+- hosts: localhost
+
+  tasks:
+   - name: Get ansible date/time facts
+     setup:
+       filter: "ansible_date_time"
+       gather_subset: "!all"
+
+   - name: Store DTG as fact
+     set_fact:
+       DTG: "{{ ansible_date_time.date }}"
+
+   - name: Create Directory {{hostvars.localhost.DTG}}
+     file:
+      path: /root/backup_switch/{{hostvars.localhost.DTG}}
+      state: directory
+  run_once: true
+
+  ## Backup Running Config
+
+- hosts: switch
+  connection: network_cli
+  vars:
+    ansible_network_os: ios
+  gather_facts: true
+
+  tasks:
+   - name: Backup Running Config
+     ios_command:
+       commands: show run
+     register: config
+  - name: Save output to accel backup
+     copy:
+       content: "{{config.stdout[0]}}"
+       dest: "/root/backup_switch/{{hostvars.localhost.DTG}}/{{ ansible_net_hostname }}_{{hostvars.localhost.DTG}}-config.config"
+
+   - name: Save running config
+     ios_config:
+      save_when: always
+                                 
